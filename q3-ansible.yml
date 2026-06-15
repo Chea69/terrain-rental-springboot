@@ -1,0 +1,24 @@
+---
+- name: Q3 Ansible playbook
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - name: Run git pull
+      command: git pull origin main
+
+    - name: Build composer
+      shell: |
+        kubectl exec terrain-pod -c web -- sh -c "composer install || echo composer skipped"
+
+    - name: Build npm
+      shell: |
+        kubectl exec terrain-pod -c web -- sh -c "npm install && npm run build || echo npm skipped"
+
+    - name: Run tests using SQLite profile
+      command: ./mvnw.cmd test -Dspring.profiles.active=test
+
+    - name: Backup MySQL database
+      shell: |
+        kubectl exec terrain-pod -c mysql -- sh -c "mysqldump -uroot -pHello@123 --databases MA_Sovitchea-db" > backup.sql
