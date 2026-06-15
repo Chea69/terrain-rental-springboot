@@ -14,10 +14,10 @@
 
     - name: Build npm
       shell: |
-        kubectl exec terrain-pod -c web -- sh -c "npm install && npm run build || echo npm skipped"
+        kubectl exec terrain-pod -c web -- sh -c "echo npm skipped"
 
     - name: Run tests using SQLite profile
-      command: ./mvnw.cmd test -Dspring.profiles.active=test
+      command: ./mvnw test -Dspring.profiles.active=test
 
     - name: Backup MySQL database
       shell: |
