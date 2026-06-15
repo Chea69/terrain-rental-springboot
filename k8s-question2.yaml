@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: terrain-pod
+spec:
+  containers:
+    - name: web
+      image: terrain-web:latest
+      imagePullPolicy: Never
+      ports:
+        - containerPort: 80
+        - containerPort: 22
+        - containerPort: 8080
+      env:
+        - name: SPRING_DATASOURCE_URL
+          value: jdbc:mysql://127.0.0.1:3306/MA_Sovitchea-db
+        - name: SPRING_DATASOURCE_USERNAME
+          value: root
+        - name: SPRING_DATASOURCE_PASSWORD
+          value: Hello@123
+
+    - name: mysql
+      image: mysql:8.0
+      ports:
+        - containerPort: 3306
+      env:
+        - name: MYSQL_DATABASE
+          value: MA_Sovitchea-db
+        - name: MYSQL_ROOT_PASSWORD
+          value: Hello@123
